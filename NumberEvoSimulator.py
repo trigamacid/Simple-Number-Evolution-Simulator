@@ -11,9 +11,11 @@ class Creature:
         return self.value
     def reproduce(self):
         return Creature(self.n1 + np.random.uniform(-1.0, 1.0), self.n2 + np.random.uniform(-1.0, 1.0), self.color)
+    def mate(self, creatureMate):
+        return Creature(self.n1 + np.random.uniform(-1.0, 1.0), creatureMate.n2 + np.random.uniform(-1.0, 1.0), self.color)
     def draw(self):
         return pygame.draw.circle(window, self.color, (self.n1 + sX//2, self.n2 + sY//2), 1, width= 0)
-
+    
      
 pygame.init()
 sX = 800
@@ -36,6 +38,7 @@ while running:
     for j in range(creatureAmount):
         creatures[j].draw()
     creatures.sort(key=lambda x: x.value)
+        #OG kill and reproduce
     # for i in range(creatureAmount//2):
     #     creatures[i] = creatures[i + creatureAmount//2].reproduce()
     dead = 0
@@ -43,9 +46,16 @@ while running:
         if np.random.uniform(0.0, 100.0) < (creatureAmount - i) * (creatureAmount - i)/100:
             creatures[i].value = -1 * creatures[creatureAmount - 1].value
             dead += 1
-    creatures.sort(key=lambda x: x.value)          
+    creatures.sort(key=lambda x: x.value)
+        #Mating instead of just reproducing   
+    # taken = np.empty((creatureAmount - dead)//2)       
     for i in range(dead):
-        creatures[i] = creatures[creatureAmount - 1 - i].reproduce()        
+        # mate = creatures[np.random.randint(dead, creatureAmount)]
+        # while mate in taken:
+        #     mate = creatures[np.random.randint(dead, creatureAmount)]
+        # creatures[i] = creatures[creatureAmount - 1 - i].mate(mate)   
+        # np.append(taken, mate)
+        creatures[i] = creatures[creatureAmount - 1 - i].reproduce()    
     pygame.display.flip()
     clock.tick(60)
 pygame.quit()
